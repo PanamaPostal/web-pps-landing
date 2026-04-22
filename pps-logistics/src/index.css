@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  
+  --color-apple-black: #1a1c44; /* Logo Navy */
+  --color-apple-gray: #64748b; /* Slate 500 */
+  --color-apple-bg: #f8fafc; /* Slate 50 */
+  --color-apple-blue: #2563eb; /* Blue 600 */
+  --color-apple-new: #ea580c; /* Orange 600 */
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-white text-apple-black antialiased overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4 {
+    @apply tracking-[-0.022em] font-semibold leading-[1.05];
+  }
+}
+
+/* Apple Editorial Glass Navbar */
+.glass-nav {
+  @apply backdrop-blur-[20px] bg-white/80 border-b border-gray-100/50 sticky top-0 z-50 h-12;
+}
+
+.section-container {
+  @apply max-w-screen-lg mx-auto px-12 py-20 md:py-32;
+}
+
+.hero-gradient {
+  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f5f5f7 100%);
+}
+
+.bento-card {
+  @apply bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-2xl transition-all duration-500 hover:scale-[1.005];
+}
+
+.secondary-text {
+  @apply text-apple-gray;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
