@@ -34,7 +34,7 @@ import { useState, useEffect, createContext, useContext } from 'react';
 import { translations } from './translations';
 
 type Language = 'en' | 'es';
-export type View = 'home' | 'garbage' | 'mayors' | 'police';
+export type View = 'home' | 'garbage' | 'mayors' | 'police' | 'privacy';
 
 const LanguageContext = createContext<{
   lang: Language;
@@ -578,8 +578,87 @@ const CTA = () => {
   );
 };
 
+const PrivacyPolicy = () => {
+  const { t, setView } = useTranslation();
+  const data = t.privacy;
+
+  return (
+    <div className="pt-32 min-h-screen bg-white">
+      <div className="max-w-screen-md mx-auto px-6 md:px-12">
+        <button
+          onClick={() => { setView('home'); window.scrollTo(0, 0); }}
+          className="flex items-center gap-2 text-apple-blue font-medium mb-12 hover:translate-x-[-4px] transition-transform"
+        >
+          <ChevronRight size={16} className="rotate-180" />
+          {data.back}
+        </button>
+
+        <div className="w-16 h-16 bg-apple-bg rounded-2xl flex items-center justify-center mb-8">
+          <ShieldCheck size={32} className="text-apple-black" />
+        </div>
+
+        <h1 className="text-[44px] md:text-[56px] font-semibold tracking-[-0.022em] leading-[1.05] mb-6">
+          {data.title}
+        </h1>
+        <p className="text-[13px] uppercase tracking-widest font-bold secondary-text mb-4">
+          {data.effectiveLabel}: {data.effectiveDate}
+        </p>
+        <p className="text-[19px] secondary-text leading-relaxed font-normal mb-16">
+          {data.intro}
+        </p>
+
+        <div className="space-y-14 pb-32">
+          {data.sections.map((section, idx) => (
+            <section key={idx}>
+              <h2 className="text-[28px] md:text-[32px] font-semibold tracking-[-0.022em] mb-4 leading-tight">
+                {section.title}
+              </h2>
+              {section.body.map((para, i) => (
+                <p key={i} className="text-[17px] secondary-text leading-relaxed mb-4">
+                  {para}
+                </p>
+              ))}
+              {section.bullets && (
+                <ul className="space-y-2 mt-4 mb-4">
+                  {section.bullets.map((b, i) => (
+                    <li key={i} className="flex gap-3 text-[17px] secondary-text leading-relaxed">
+                      <span className="text-apple-blue mt-[9px] text-[8px] shrink-0">●</span>
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))}
+
+          <section className="bento-card border-none bg-apple-bg p-10">
+            <h2 className="text-[24px] font-semibold tracking-[-0.022em] mb-4">
+              {data.contact.title}
+            </h2>
+            <p className="text-[17px] secondary-text leading-relaxed mb-2">
+              {data.contact.description}
+            </p>
+            <ul className="space-y-2 text-[17px]">
+              <li>
+                <span className="secondary-text">{data.contact.emailLabel}: </span>
+                <a href={`mailto:${data.contact.email}`} className="text-apple-blue hover:underline">
+                  {data.contact.email}
+                </a>
+              </li>
+              <li>
+                <span className="secondary-text">{data.contact.addressLabel}: </span>
+                <span className="text-apple-black">{data.contact.address}</span>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Footer = () => {
-  const { t } = useTranslation();
+  const { t, setView } = useTranslation();
   return (
     <footer className="bg-apple-bg py-24 px-12 border-t border-gray-200">
       <div className="max-w-screen-lg mx-auto">
@@ -616,7 +695,12 @@ const Footer = () => {
           <p>{t.footer.copyright}</p>
           <div className="flex space-x-6">
             <span>{t.footer.legal[0]}</span>
-            <a href="#" className="hover:text-apple-black transition-colors underline-offset-2">{t.footer.legal[1]}</a>
+            <button
+              onClick={() => { setView('privacy'); window.scrollTo(0, 0); }}
+              className="hover:text-apple-black transition-colors underline-offset-2 cursor-pointer"
+            >
+              {t.footer.legal[1]}
+            </button>
             <a href="#" className="hover:text-apple-black transition-colors underline-offset-2">{t.footer.legal[2]}</a>
             <a href="#" className="hover:text-apple-black transition-colors underline-offset-2">{t.footer.legal[3]}</a>
           </div>
@@ -646,6 +730,8 @@ export default function App() {
               <VisionaryTrust />
               <CTA />
             </>
+          ) : view === 'privacy' ? (
+            <PrivacyPolicy />
           ) : (
             <ServiceDetailPage type={view} />
           )}
